@@ -10,11 +10,18 @@ import os
 
 JOKE = "I mow the lawn in straight lines so the neighbors know I'm not cutting corners."
 
+# The gate allows 1 to 200 characters; fail loudly instead of shipping
+# an entry the scorer would refuse.
+MAX_CHARS = 200
+
 
 def main() -> None:
+    text = JOKE.strip()
+    if not 1 <= len(text) <= MAX_CHARS:
+        raise ValueError(f"joke is {len(text)} characters, gate allows 1-{MAX_CHARS}")
     os.makedirs("/output", exist_ok=True)
     with open("/output/entry.txt", "w", encoding="utf-8", newline="\n") as f:
-        f.write(JOKE + "\n")
+        f.write(text + "\n")
 
 
 if __name__ == "__main__":
